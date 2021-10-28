@@ -1,32 +1,34 @@
-import React, { useEffect } from "react";
-import { Form, Input, Button } from "antd";
+import React, { useEffect, useState } from "react";
+import { Input } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+const { TextArea } = Input;
 
 const EditTask = (props) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
   useEffect(() => {
-    console.log("props", props);
-  });
+    setDescription(props.dataTask.title);
+    setTitle(props.dataTask.description);
+  }, [props]);
+
+  const handleSubmitEdit = () => {};
+
   return (
-    <Form className="login-form">
-      <Form.Item
-        name="title"
-        rules={[{ required: true, message: "Please input your title!" }]}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
-        name="description"
-        rules={[{ required: true, message: "Please input your description!" }]}
-      >
-        <Input.TextArea />
-      </Form.Item>
-
-      <Form.Item>
-        <Button type="primary" htmlType="submit" className="login-form-button">
-          Save task
-        </Button>
-      </Form.Item>
-    </Form>
+    <form onSubmit={handleSubmitEdit}>
+      <label>Title</label>
+      <Input
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        prefix={<UserOutlined />}
+      />
+      <label>Description</label>
+      <TextArea
+        value={description}
+        rows={4}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+    </form>
   );
 };
 

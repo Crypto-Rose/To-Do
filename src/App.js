@@ -1,8 +1,8 @@
 import "./App.css";
 import { Row, Col, notification } from "antd";
 import { useEffect, useState } from "react";
+import TaskOnly from "./compontents/TaskOnly";
 import Tasks from "./compontents/Tasks";
-import Task from "./compontents/Task";
 
 function App() {
   const [form, setForm] = useState();
@@ -49,10 +49,10 @@ function App() {
     <div className="App">
       <Row justify="space-around">
         <Col span={10}>
-          <Tasks handleSubmitSave={handleSubmitSave} />
+          <TaskOnly handleSubmitSave={handleSubmitSave} />
         </Col>
         <Col span={10}>
-          <Task form={form} />
+          <Tasks form={form} />
         </Col>
       </Row>
     </div>
