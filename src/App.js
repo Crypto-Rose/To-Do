@@ -1,5 +1,5 @@
 import "./App.css";
-import { Row, Col, notification } from "antd";
+import { Row, Col } from "antd";
 import { useEffect, useState } from "react";
 import TaskOnly from "./compontents/TaskOnly";
 import Tasks from "./compontents/Tasks";
@@ -21,13 +21,6 @@ function App() {
       return;
     }
     return dataInLocal;
-  };
-
-  const openNotificationWithIcon = (type) => {
-    notification[type]({
-      message: "Super #Amiguis",
-      description: `The process is ${type}`,
-    });
   };
 
   const handleSubmitSave = (values) => {

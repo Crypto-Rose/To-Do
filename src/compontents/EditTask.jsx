@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Input } from "antd";
+import { Input, Modal } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 const { TextArea } = Input;
 
@@ -8,14 +8,23 @@ const EditTask = (props) => {
   const [description, setDescription] = useState("");
 
   useEffect(() => {
-    setDescription(props.dataTask.title);
-    setTitle(props.dataTask.description);
+    const { tasks, id } = props;
+    if (id !== undefined && tasks !== undefined) {
+      setTitle(tasks[id].title);
+      setDescription(tasks[id].description);
+    }
   }, [props]);
 
-  const handleSubmitEdit = () => {};
+  const handleOk = () => {
+    props.editTask(title, description);
+  };
+
+  const handleCancel = () => {
+    props.changeStatusModal(false);
+  };
 
   return (
-    <form onSubmit={handleSubmitEdit}>
+    <Modal visible={props.visible} onOk={handleOk} onCancel={handleCancel}>
       <label>Title</label>
       <Input
         value={title}
@@ -28,7 +37,7 @@ const EditTask = (props) => {
         rows={4}
         onChange={(e) => setDescription(e.target.value)}
       />
-    </form>
+    </Modal>
   );
 };
 
