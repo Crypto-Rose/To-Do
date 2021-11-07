@@ -24,6 +24,7 @@ function App() {
   };
 
   const handleSubmitSave = (values) => {
+    values.status = "new";
     let localParse = [];
     const verified = verifiedDataExistInLocal();
 

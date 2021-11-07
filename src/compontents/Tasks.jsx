@@ -19,12 +19,21 @@ export default function Tasks(props) {
     setVisibleModal(status);
   };
 
-  const selectTask = (index) => {
+  const selectTaskEdit = (index) => {
     changeStatusModal(true);
     setIndexTask(index);
   };
 
-  const selectTaskSuccess = (index) => {
+  const changeLocalStorage = (form) => {
+    localStorage.setItem("formData", JSON.stringify(form));
+  };
+
+  const selectTaskSuccess = (indexTask) => {
+    formGeneral[indexTask].status = "success";
+    const aux = [...formGeneral];
+    setFormGeneral(aux);
+    changeLocalStorage(aux);
+
     Modal.success({
       title: "Congratulations!!!",
       content: (
@@ -46,7 +55,7 @@ export default function Tasks(props) {
     formGeneral[indexTask].description = description;
     setFormGeneral(formGeneral);
     setVisibleModal(false);
-    localStorage.setItem("formData", JSON.stringify(formGeneral));
+    changeLocalStorage(formGeneral);
     message.success("The task was edited!");
   };
 
@@ -58,48 +67,101 @@ export default function Tasks(props) {
         dataSource={formGeneral}
         itemLayout="horizontal"
         style={{ textAlign: "initial", wordWrap: "break-word" }}
-        renderItem={(item, index) => (
-          <Collapse accordion ghost collapsible="header">
-            <Panel
-              header={item.title}
-              extra={
-                <>
-                  <i
-                    style={{
-                      marginRight: "8px",
-                    }}
-                    onClick={() => selectTask(index)}
-                  >
-                    <FiXCircle
+        renderItem={(item, index) =>
+          item.status === "new" && (
+            <Collapse accordion ghost collapsible="header">
+              <Panel
+                header={item.title}
+                extra={
+                  <>
+                    <i
                       style={{
-                        color: "red",
-                        fontSize: "15px",
+                        marginRight: "8px",
                       }}
-                    />
-                  </i>
-                  <i
-                    style={{
-                      marginRight: "8px",
-                    }}
-                    onClick={() => selectTaskSuccess(index)}
-                  >
-                    <FiCheckCircle
+                      onClick={() => selectTaskSuccess(index)}
+                    >
+                      <FiXCircle
+                        style={{
+                          color: "red",
+                          fontSize: "15px",
+                        }}
+                      />
+                    </i>
+                    <i
                       style={{
-                        color: "green",
-                        fontSize: "15px",
+                        marginRight: "8px",
                       }}
-                    />
-                  </i>
-                  <i onClick={() => selectTaskSuccess(index)}>
-                    <AiOutlineEdit />
-                  </i>
-                </>
-              }
-            >
-              <List.Item>{item.description}</List.Item>
-            </Panel>
-          </Collapse>
-        )}
+                      onClick={() => selectTaskSuccess(index)}
+                    >
+                      <FiCheckCircle
+                        style={{
+                          color: "green",
+                          fontSize: "15px",
+                        }}
+                      />
+                    </i>
+                    <i onClick={() => selectTaskEdit(index)}>
+                      <AiOutlineEdit />
+                    </i>
+                  </>
+                }
+              >
+                <List.Item>{item.description}</List.Item>
+              </Panel>
+            </Collapse>
+          )
+        }
+      />
+      <List
+        size="large"
+        header={<div>Success tasks</div>}
+        dataSource={formGeneral}
+        itemLayout="horizontal"
+        style={{ textAlign: "initial", wordWrap: "break-word" }}
+        renderItem={(item, index) =>
+          item.status === "success" && (
+            <Collapse accordion ghost collapsible="header">
+              <Panel
+                header={item.title}
+                extra={
+                  <>
+                    <i
+                      style={{
+                        marginRight: "8px",
+                      }}
+                      onClick={() => selectTaskSuccess(index)}
+                    >
+                      <FiXCircle
+                        style={{
+                          color: "red",
+                          fontSize: "15px",
+                        }}
+                      />
+                    </i>
+                    <i
+                      style={{
+                        marginRight: "8px",
+                      }}
+                      onClick={() => selectTaskSuccess(index)}
+                    >
+                      <FiCheckCircle
+                        style={{
+                          color: "green",
+                          fontSize: "15px",
+                        }}
+                      />
+                    </i>
+                    <i onClick={() => selectTaskEdit(index)}>
+                      <AiOutlineEdit />
+                    </i>
+                  </>
+                }
+              >
+                <List.Item>{item.description}</List.Item>
+              </Panel>
+            </Collapse>
+          )
+        }
       />
       <EditTask
         visible={visibleModal}
